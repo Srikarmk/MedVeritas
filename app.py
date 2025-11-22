@@ -150,7 +150,7 @@ def main():
         
         st.markdown("---")
         st.header("About")
-        st.info("""
+        st.info(""" 
         MedVeritas uses NLP and Machine Learning to predict drug effectiveness from patient reviews.
         
         **Features:**
