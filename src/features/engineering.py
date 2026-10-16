@@ -87,12 +87,17 @@ def encode_categorical_features(df: pd.DataFrame,
     return df_encoded, encoders
 
 
-def create_derived_features(df: pd.DataFrame) -> pd.DataFrame:
+def create_derived_features(df: pd.DataFrame, fit_index=None) -> pd.DataFrame:
     """
     Create derived features from existing columns.
     
     Args:
         df: DataFrame
+        fit_index: Index of the training rows. drug_avg_rating and condition_avg_rating are
+            computed from the rating, so they must come from training rows only; a drug or
+            condition with no training reviews gets the overall training average. If None,
+            the averages use every row, which leaks each review's own rating (and the test
+            set's) into its features. The original notebook results were produced that way.
     
     Returns:
         DataFrame with derived features
@@ -110,14 +115,21 @@ def create_derived_features(df: pd.DataFrame) -> pd.DataFrame:
         df_derived['condition_popularity'] = df['condition'].map(condition_counts)
         print(f"  Created condition_popularity feature")
     
+    if fit_index is None:
+        rated = df
+        print("  WARNING: average ratings computed over all rows (target leakage); pass fit_index")
+    else:
+        rated = df.loc[fit_index]
+    fallback = rated['rating'].mean() if 'rating' in df.columns else None
+
     if 'drugName' in df.columns and 'rating' in df.columns:
-        drug_avg_rating = df.groupby('drugName')['rating'].mean()
-        df_derived['drug_avg_rating'] = df['drugName'].map(drug_avg_rating)
+        drug_avg_rating = rated.groupby('drugName')['rating'].mean()
+        df_derived['drug_avg_rating'] = df['drugName'].map(drug_avg_rating).fillna(fallback)
         print(f"  Created drug_avg_rating feature")
     
     if 'condition' in df.columns and 'rating' in df.columns:
-        condition_avg_rating = df.groupby('condition')['rating'].mean()
-        df_derived['condition_avg_rating'] = df['condition'].map(condition_avg_rating)
+        condition_avg_rating = rated.groupby('condition')['rating'].mean()
+        df_derived['condition_avg_rating'] = df['condition'].map(condition_avg_rating).fillna(fallback)
         print(f"  Created condition_avg_rating feature")
     
     if 'review_length' in df.columns:
@@ -136,7 +148,8 @@ def prepare_features(df: pd.DataFrame,
                      text_col: str = 'review_processed',
                      include_tfidf: bool = True,
                      max_tfidf_features: int = 500,
-                     categorical_cols: Optional[List[str]] = None) -> Tuple[pd.DataFrame, dict]:
+                     categorical_cols: Optional[List[str]] = None,
+                     fit_index=None) -> Tuple[pd.DataFrame, dict]:
     """
     Prepare all features for modeling.
     
@@ -146,6 +159,8 @@ def prepare_features(df: pd.DataFrame,
         include_tfidf: Whether to include TF-IDF features
         max_tfidf_features: Maximum TF-IDF features
         categorical_cols: List of categorical columns to encode
+        fit_index: Index of the training rows, used for features computed from the rating.
+            Pass it (split first, then build features); see create_derived_features.
     
     Returns:
         Tuple of (feature_df, feature_info_dict)
@@ -155,7 +170,7 @@ def prepare_features(df: pd.DataFrame,
     if categorical_cols is None:
         categorical_cols = ['drugName', 'condition']
     
-    df_features = create_derived_features(df)
+    df_features = create_derived_features(df, fit_index=fit_index)
     df_features, encoders = encode_categorical_features(df_features, categorical_cols)
     
     feature_cols = []

@@ -1,0 +1,134 @@
+{
+  "n_reviews": 366815,
+  "n_train": 293452,
+  "n_test": 73363,
+  "original": {
+    "classification": {
+      "Logistic Regression": {
+        "accuracy": 0.7353434292490765,
+        "f1_score": 0.7912796697626419,
+        "roc_auc": 0.795889027068426
+      },
+      "Random Forest": {
+        "accuracy": 0.761378351485081,
+        "f1_score": 0.8162755551824021,
+        "roc_auc": 0.834113727764991
+      },
+      "XGBoost": {
+        "accuracy": 0.786336436623366,
+        "f1_score": 0.8285742407506643,
+        "roc_auc": 0.8634401962838979
+      }
+    },
+    "regression": {
+      "Linear Regression": {
+        "rmse": 2.76524411162677,
+        "mae": 2.252896551779077,
+        "r2_score": 0.37225386360813206
+      },
+      "Random Forest": {
+        "rmse": 2.7412129809423575,
+        "mae": 2.19888747157888,
+        "r2_score": 0.3831172083211284
+      },
+      "XGBoost": {
+        "rmse": 2.626893677446547,
+        "mae": 2.083590030670166,
+        "r2_score": 0.43349719047546387
+      }
+    }
+  },
+  "leak_free": {
+    "classification": {
+      "Logistic Regression": {
+        "accuracy": 0.7291959161975383,
+        "f1_score": 0.7866126762832562,
+        "roc_auc": 0.7859802336823596
+      },
+      "Random Forest": {
+        "accuracy": 0.7537587067050148,
+        "f1_score": 0.8109703140205301,
+        "roc_auc": 0.8264370076681677
+      },
+      "XGBoost": {
+        "accuracy": 0.7757452666875673,
+        "f1_score": 0.8200787401574803,
+        "roc_auc": 0.8497924480638808
+      }
+    },
+    "regression": {
+      "Linear Regression": {
+        "rmse": 2.813745168886916,
+        "mae": 2.295175327444515,
+        "r2_score": 0.3500400139256319
+      },
+      "Random Forest": {
+        "rmse": 2.809462549726274,
+        "mae": 2.254723067405055,
+        "r2_score": 0.3520170321749272
+      },
+      "XGBoost": {
+        "rmse": 2.6868039493967357,
+        "mae": 2.134777784347534,
+        "r2_score": 0.4073626399040222
+      }
+    }
+  },
+  "without_averages": {
+    "classification": {
+      "Logistic Regression": {
+        "accuracy": 0.6955958725788204,
+        "f1_score": 0.7619697292688126,
+        "roc_auc": 0.7412806078035079
+      },
+      "Random Forest": {
+        "accuracy": 0.7325354742854028,
+        "f1_score": 0.801066547710775,
+        "roc_auc": 0.8036258567119229
+      },
+      "XGBoost": {
+        "accuracy": 0.7641590447500783,
+        "f1_score": 0.814140849911915,
+        "roc_auc": 0.8382803353455801
+      }
+    }
+  },
+  "xgboost_accuracy_by_drug_review_count": [
+    {
+      "drug_reviews": "1",
+      "test_reviews": 190,
+      "original": 0.9052631578947369,
+      "leak_free": 0.7,
+      "without_averages": 0.7263157894736842
+    },
+    {
+      "drug_reviews": "2-5",
+      "test_reviews": 802,
+      "original": 0.871571072319202,
+      "leak_free": 0.7281795511221946,
+      "without_averages": 0.7755610972568578
+    },
+    {
+      "drug_reviews": "6-50",
+      "test_reviews": 9585,
+      "original": 0.8027125717266562,
+      "leak_free": 0.7744392279603547,
+      "without_averages": 0.7513823682837767
+    },
+    {
+      "drug_reviews": "51-500",
+      "test_reviews": 30782,
+      "original": 0.7801637320511987,
+      "leak_free": 0.7741862127217205,
+      "without_averages": 0.7565460333961406
+    },
+    {
+      "drug_reviews": "501+",
+      "test_reviews": 32004,
+      "original": 0.7845269341332334,
+      "leak_free": 0.7792775903012124,
+      "without_averages": 0.775246844144482
+    }
+  ],
+  "single_review_drugs": 911
+}
